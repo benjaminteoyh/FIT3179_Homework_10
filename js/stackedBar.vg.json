@@ -1,0 +1,103 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 400,
+  "height": 300,
+  "title": "Highest education by State",
+  "data": {"url": "../Data/highestEducation.csv"},
+  "params": [
+    {
+      "name": "State_selection",
+      "bind": {
+        "input": "select",
+        "options": [null, "NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
+        "labels": ["Show All", "NSW", "VIC", "QLD", "SA", "WA", "TAS", "NT", "ACT"],
+        "name": "State Selection: "
+      }
+    }
+  ],
+  "transform": [
+    {"filter": "State_selection == null || datum.State == State_selection"}
+  ],
+  "layer": [
+    {
+      "mark": "bar",
+      "encoding": {
+        "x": {
+          "field": "ed",
+          "type": "nominal",
+          "axis": {"labelAngle": -45},
+          "sort": [
+            "Postgraduate Degree",
+            "Graduate Diploma/Graduate Certificate",
+            "Bachelor Degree",
+            "Advanced Diploma/Diploma",
+            "Certificate III/IV",
+            "Year 12 or equivalent",
+            "Year 11",
+            "Year 10",
+            "Below Year 10"
+          ],
+          "title": "Highest Education Level"
+        },
+        "y": {
+          "field": "Persons",
+          "type": "quantitative",
+          "stack": "zero",
+          "title": "Population"
+        },
+        "color": {
+          "field": "State",
+          "type": "nominal",
+          "title": "State"
+        },
+        "tooltip": [
+          {"field": "ed", "type": "nominal", "title": "Highest Education"},
+          {"field": "Persons", "type": "quantitative", "format": ",", "title": "Population"},
+          {"field": "State", "type": "nominal"}
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "middle",
+        "dy": -5
+      },
+      "encoding": {
+        "x": {
+          "field": "ed",
+          "type": "nominal",
+          "axis": {"labelAngle": -45},
+          "sort": [
+            "Postgraduate Degree",
+            "Graduate Diploma/Graduate Certificate",
+            "Bachelor Degree",
+            "Advanced Diploma/Diploma",
+            "Certificate III/IV",
+            "Year 12 or equivalent",
+            "Year 11",
+            "Year 10",
+            "Below Year 10"
+          ]
+        },
+        "y": {
+          "field": "Persons",
+          "type": "quantitative",
+          "stack": "zero"
+        },
+        "text": {"field": "Persons", "type": "quantitative", "format": ","},
+        "color": {
+          "value": "black"
+        },
+        "opacity": {
+          "condition": { 
+            "test": "datum['State'] == 'VIC'",
+            "value": 1
+          },
+          "value": 0
+        }
+      }
+    }
+  ]
+}
